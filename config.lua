@@ -199,9 +199,9 @@ lvim.plugins = {
   ---[[
   --{"mfussenegger/nvim-dap"},
   --{"Pocco81/DAPInstall.nvim"},
-{"aklt/plantuml-syntax"},
-{"weirongxu/plantuml-previewer.vim"},
-{"tyru/open-browser.vim"},
+  { "aklt/plantuml-syntax" },
+  { "weirongxu/plantuml-previewer.vim" },
+  { "tyru/open-browser.vim" },
   { "nvim-telescope/telescope-dap.nvim" },
   { "theHamsta/nvim-dap-virtual-text" },
   {
@@ -239,21 +239,43 @@ g:vim_markdown_new_list_item_indent
 --   end,
 -- })
 
+-- Func: Output diagram from current puml file.
+local plantumlOutputSingle = function()
+  vim.cmd(":! /usr/bin/plantuml " .. "%" .. " -o ./out -tsvg")
+end
+
+-- TODO Só copia arquivo atualainda
+-- Func: Output diagrams from current working directory.
+local plantumlOutputAll = function()
+  vim.cmd(":! /usr/bin/plantuml ./**/*.puml -o ./out -tsvg")
+end
+
+-- local umlcall = function()
+  lvim.builtin.which_key.mappings["U"] = {
+    name = "Plantuml",
+    f = {  plantumlOutputSingle , "Print current file" },
+    w = {  plantumlOutputAll , "Print all files in workspace" },
+  }
+-- end
+
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown" },
-  command = "setlocal nospell|set conceallevel=3",
-})
--- vim.api.nvim_create_autocmd("FileType", {
---   pattern = { "markdown" },
---   command = "set conceallevel=3",
--- })
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = { "*" },
   command = "set wrap linebreak",
 })
 vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown" },
+  command = "setlocal nospell|set conceallevel=3",
+})
+vim.api.nvim_create_autocmd("FileType", {
   pattern = { "plantuml" },
   command = "setlocal foldmethod=marker",
 })
-
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = { "plantuml" },
+--   callback = umlcall,
+-- })
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--   pattern = { "*.puml" },
+--   callback = umlcall,
+-- })
