@@ -44,6 +44,18 @@ lvim.keys.normal_mode["O"] = "O<ESC>"
 --     ["<C-k>"] = actions.move_selection_previous,
 --   },
 -- }
+-- Func: Output diagram from current puml file.
+local plantumlOutputSingle = function()
+  vim.cmd(":! /usr/bin/plantuml " .. "%" .. " -o ./out -tsvg")
+end
+
+-- TODO Só copia arquivo atualainda
+-- Func: Output diagrams from current working directory.
+local plantumlOutputAll = function()
+  vim.cmd(":! /usr/bin/plantuml ./**/*.puml -o ./out -tsvg")
+end
+
+
 
 -- Use which-key to add extra bindings with the leader-key prefix
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
@@ -56,6 +68,12 @@ lvim.builtin.which_key.mappings["t"] = {
   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Wordspace Diagnostics" },
 }
+ lvim.builtin.which_key.mappings["U"] = {
+    name = "Plantuml",
+    p = { "<cmd>PlantumlOpen<CR>" , "Preview UML" },
+    f = {  plantumlOutputSingle , "Print current file" },
+    w = {  plantumlOutputAll , "Print all files in workspace" },
+  }
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
@@ -238,24 +256,18 @@ g:vim_markdown_new_list_item_indent
 --     require("nvim-treesitter.highlight").attach(0, "bash")
 --   end,
 -- })
-
--- Func: Output diagram from current puml file.
-local plantumlOutputSingle = function()
-  vim.cmd(":! /usr/bin/plantuml " .. "%" .. " -o ./out -tsvg")
-end
-
--- TODO Só copia arquivo atualainda
--- Func: Output diagrams from current working directory.
-local plantumlOutputAll = function()
-  vim.cmd(":! /usr/bin/plantuml ./**/*.puml -o ./out -tsvg")
-end
+-- Preview UML diagram (DeSnecessário por causa do plugin plantuml-previewer, método PlantumlOpen)
+-- local plantumlPreview = function()
+--   vim.cmd(":!$BROWSER " .. "%:p:h/out/%:t:r.svg")
+-- end
 
 -- local umlcall = function()
-  lvim.builtin.which_key.mappings["U"] = {
-    name = "Plantuml",
-    f = {  plantumlOutputSingle , "Print current file" },
-    w = {  plantumlOutputAll , "Print all files in workspace" },
-  }
+  -- lvim.builtin.which_key.mappings["U"] = {
+  --   name = "Plantuml",
+  --   p = { "<cmd>PlantumlOpen<CR>" , "Preview UML" },
+  --   f = {  plantumlOutputSingle , "Print current file" },
+  --   w = {  plantumlOutputAll , "Print all files in workspace" },
+  -- }
 -- end
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
@@ -271,6 +283,11 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "plantuml" },
   command = "setlocal foldmethod=marker",
 })
+
+-- vim.api.nvim_create_autocmd("BufWrite", {
+--   pattern = { "*.puml" },
+--   callback = plantumlOutputSingle,
+-- })
 -- vim.api.nvim_create_autocmd("FileType", {
 --   pattern = { "plantuml" },
 --   callback = umlcall,
