@@ -13,6 +13,7 @@ lvim.log.level = "warn"
 lvim.format_on_save = false
 lvim.colorscheme = "onedarker"
 vim.opt.relativenumber = true
+vim.opt.foldmethod = "indent"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -74,6 +75,7 @@ lvim.builtin.which_key.mappings["t"] = {
     f = {  plantumlOutputSingle , "Print current file" },
     w = {  plantumlOutputAll , "Print all files in workspace" },
   }
+lvim.builtin.which_key.mappings["C"] = { "<cmd>VCoolor<CR>", "Color Picker" }
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
@@ -213,6 +215,7 @@ linters.setup {
 -- }
 
 lvim.plugins = {
+  {"KabbAmine/vCoolor.vim"},
   { "preservim/vim-markdown" },
   ---[[
   --{"mfussenegger/nvim-dap"},
@@ -283,7 +286,10 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "plantuml" },
   command = "setlocal foldmethod=marker",
 })
-
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "zsh" },
+  command = "set foldmethod=marker",
+})
 -- vim.api.nvim_create_autocmd("BufWrite", {
 --   pattern = { "*.puml" },
 --   callback = plantumlOutputSingle,
