@@ -69,12 +69,12 @@ lvim.builtin.which_key.mappings["t"] = {
   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Wordspace Diagnostics" },
 }
- lvim.builtin.which_key.mappings["U"] = {
-    name = "Plantuml",
-    p = { "<cmd>PlantumlOpen<CR>" , "Preview UML" },
-    f = {  plantumlOutputSingle , "Print current file" },
-    w = {  plantumlOutputAll , "Print all files in workspace" },
-  }
+lvim.builtin.which_key.mappings["U"] = {
+  name = "Plantuml",
+  p = { "<cmd>PlantumlOpen<CR>", "Preview UML" },
+  f = { plantumlOutputSingle, "Print current file" },
+  w = { plantumlOutputAll, "Print all files in workspace" },
+}
 lvim.builtin.which_key.mappings["C"] = { "<cmd>VCoolor<CR>", "Color Picker" }
 
 -- TODO: User Config for predefined plugins
@@ -85,6 +85,10 @@ lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
+lvim.builtin.nvimtree.respect_buf_cwd = 1
+lvim.builtin.nvimtree.setup.auto_reload_on_write = true
+lvim.builtin.nvimtree.setup.update_cwd = true
+-- lvim.builtin.nvimtree.setup.view.mappings.list = { "R", ":NvimTreeRefresh" }
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
@@ -215,7 +219,7 @@ linters.setup {
 -- }
 
 lvim.plugins = {
-  {"KabbAmine/vCoolor.vim"},
+  { "KabbAmine/vCoolor.vim" },
   { "preservim/vim-markdown" },
   ---[[
   --{"mfussenegger/nvim-dap"},
@@ -265,14 +269,16 @@ g:vim_markdown_new_list_item_indent
 -- end
 
 -- local umlcall = function()
-  -- lvim.builtin.which_key.mappings["U"] = {
-  --   name = "Plantuml",
-  --   p = { "<cmd>PlantumlOpen<CR>" , "Preview UML" },
-  --   f = {  plantumlOutputSingle , "Print current file" },
-  --   w = {  plantumlOutputAll , "Print all files in workspace" },
-  -- }
+-- lvim.builtin.which_key.mappings["U"] = {
+--   name = "Plantuml",
+--   p = { "<cmd>PlantumlOpen<CR>" , "Preview UML" },
+--   f = {  plantumlOutputSingle , "Print current file" },
+--   w = {  plantumlOutputAll , "Print all files in workspace" },
+-- }
 -- end
 
+
+vim.cmd("set comments +=fb:-")
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = { "*" },
